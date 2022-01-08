@@ -57,6 +57,6 @@ AppTheme(){
           TargetPlatform.iOS: RouteTransition(),
           TargetPlatform.android: RouteTransition()
         }),
-    fontFamily: AppConstant.font_poppins
+    //fontFamily: AppConstant.font_poppins
   );
 }

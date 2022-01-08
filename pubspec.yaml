@@ -26,6 +26,7 @@ dependencies:
   url_launcher: ^6.0.17
   device_apps: ^2.1.1
   skeletons: ^0.0.3
+  flutter_svg: ^1.0.0
 
 dev_dependencies:
   flutter_test:

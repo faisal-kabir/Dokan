@@ -5,7 +5,7 @@ import 'package:wedevs/Theme/themes.dart';
 
 import '../main.dart';
 
-Widget DefaultTextField({required TextEditingController controller,FocusNode? focusNode,String? label,Color? backgroundColor,IconData? prefixIcon,Widget? suffixIcon,
+Widget DefaultTextField({required TextEditingController controller,FocusNode? focusNode,String? label,Color? backgroundColor,Widget? prefixIcon,Widget? suffixIcon,
   int maxLine=1,TextInputType textInputType=TextInputType.text,bool obscureText=false,String? hint,bool enable=true,GestureTapCallback? onTap,bool isRequired=false,bool borderEnable=false,
 double? borderRadius,bool labelAsTitle=false,TextAlign textAlign=TextAlign.left,bool autofocus=false,EdgeInsets? contentPadding,Color? borderColor,bool enableValidation=true,List<TextInputFormatter>? inputFormatters,
   FormFieldValidator<String>? validator}){
@@ -57,7 +57,7 @@ double? borderRadius,bool labelAsTitle=false,TextAlign textAlign=TextAlign.left,
             } : null,
             decoration: InputDecoration(
                 filled: true,
-                contentPadding: contentPadding ?? const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                contentPadding: contentPadding ?? EdgeInsets.all(Dimension.Padding),
                 fillColor: enable ? backgroundColor ?? Themes.TextFieldBackground : Colors.transparent,
                 enabledBorder: borderEnable ? textFieldBorder(borderRadius: borderRadius ?? Dimension.Size_10,borderColor: borderColor) : roundedBorder(),
                 focusedBorder: borderEnable ? textFieldBorder(borderRadius: borderRadius ?? Dimension.Size_10,borderColor: borderColor) : roundedBorder(),
@@ -66,7 +66,7 @@ double? borderRadius,bool labelAsTitle=false,TextAlign textAlign=TextAlign.left,
                 border: borderEnable ? textFieldBorder(borderRadius: borderRadius ?? Dimension.Size_10,borderColor: borderColor) : roundedBorder(),
                 labelText: labelAsTitle ? null : label!=null ? '$label${isRequired ? '*' : ''}' : null,
                 labelStyle: TextStyle(color: Themes.Text_Color,fontSize: Dimension.Text_Size,fontWeight: Dimension.textNormal),
-                prefixIcon: prefixIcon != null ? Icon(prefixIcon,color: Themes.Primary,) :  null,
+                prefixIcon: prefixIcon,
                 errorStyle: TextStyle(fontSize: Dimension.Text_Size_Small_Extra,color: Themes.Red),
                 suffixIcon: suffixIcon,
                 hintText: hint,
@@ -87,6 +87,6 @@ textFieldBorder({bool isError=false,double? borderRadius,Color? borderColor}){
 }
 
 roundedBorder()=>UnderlineInputBorder(
-    borderSide: BorderSide.none,
-    borderRadius: BorderRadius.circular(Dimension.Size_10)
+  borderSide: BorderSide.none,
+  borderRadius: BorderRadius.circular(Dimension.Size_10),
 );
