@@ -23,7 +23,7 @@ AppTheme(){
       backgroundColor: Colors.white,
     ),
     cardTheme: const CardTheme(
-      shadowColor: Colors.white70
+      shadowColor: Color(0xFFEAEAED)
     ),
     textTheme: TextTheme(
         headline1: TextStyle(

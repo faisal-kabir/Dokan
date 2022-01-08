@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:wedevs/Controller/product_controller.dart';
 import 'package:wedevs/Dimension/dimension.dart';
@@ -59,8 +60,8 @@ class _ProductPageState extends State<ProductPage> with TickerProviderStateMixin
       itemCount: controller.products!.length,
       padding: EdgeInsets.only(left: 10,right: 10,top: 10),
       crossAxisCount: 4,
-      mainAxisSpacing: 4.0,
-      crossAxisSpacing: 4.0,
+      mainAxisSpacing: 8.0,
+      crossAxisSpacing: 8.0,
       itemBuilder: (context, index) {
         return GridAnimation(
             index: 2,
@@ -74,16 +75,63 @@ class _ProductPageState extends State<ProductPage> with TickerProviderStateMixin
   singleApplication(Product productData, int position){
     return Card(
       elevation: 5,
-      child: Padding(
-        padding: EdgeInsets.all(Dimension.Size_10),
-        child: CachedNetworkImage(
-          imageUrl: productData.images![0].src!,
-          height: 90,
-          width: 90,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => ImagePlaceHolder(height: 90),
-          errorWidget: (context, url, error) => ImagePlaceHolder(height: 90),
-        ),
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Dimension.Padding)
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: Color(0xFFDFE1F0),
+            child: CachedNetworkImage(
+              imageUrl: productData.images![0].src!,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => ImagePlaceHolder(height: 90),
+              errorWidget: (context, url, error) => ImagePlaceHolder(height: 90),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(Dimension.Size_10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(productData.name!,style: Get.textTheme.bodyText1!.copyWith(fontSize: Dimension.Text_Size_Big),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                SizedBox(height: Dimension.Size_5,),
+                Row(
+                  children: [
+                    Visibility(
+                      visible: getVisibility(productData),
+                      child: Padding(
+                        padding: EdgeInsets.only(right: Dimension.Size_10),
+                        child: Text('\$${productData.regularPrice!}',style: Get.textTheme.bodyText1!.copyWith(decoration: TextDecoration.lineThrough),),
+                      )
+                    ),
+                    Text('\$${productData.price!}',style: Get.textTheme.headline1,)
+                  ],
+                ),
+                SizedBox(height: Dimension.Size_5,),
+                RatingBar.builder(
+                  initialRating: double.parse(productData.averageRating!),
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  ignoreGestures: true,
+                  itemCount: 5,
+                  itemSize: Dimension.Size_16,
+                  itemPadding: EdgeInsets.only(right: Dimension.Size_2),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -105,6 +153,18 @@ class _ProductPageState extends State<ProductPage> with TickerProviderStateMixin
           },
         )
     );
+  }
+
+  bool getVisibility(Product productData) {
+    if(productData.regularPrice!.isNotEmpty) {
+      if(double.parse(productData.price!)<double.parse(productData.regularPrice!)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
 }
