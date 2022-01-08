@@ -4,6 +4,7 @@ import 'package:wedevs/URL/app_constant.dart';
 class Language {
   String Required=' is required !';
   String Sign_In='Sign In';
+  String Sign_Up='Sign Up';
 
   var Username_or_Email='Username or Email';
 
@@ -25,7 +26,7 @@ class Language {
 
   var Create_Account='Create Account';
 
-  String Already_have_an_Account='Already have an Account? Sign In';
+  String Already_have_an_Account='Already have an Account?';
 
   var Please_Agree_with_terms_and_condition='Please Agree with Terms & Condition';
 
