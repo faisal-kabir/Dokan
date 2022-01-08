@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:wedevs/Theme/themes.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -11,7 +13,9 @@ Widget SwipeRefresh({required RefreshController controller,required VoidCallback
     ),
     onRefresh: onRefresh,
     //header: AppConstant.swipeIndicator,
-    header: WaterDropMaterialHeader(backgroundColor: Themes.Primary,),
+    header: Platform.isIOS
+        ? ClassicHeader()
+        : MaterialClassicHeader(),
     enablePullDown: true,
     enablePullUp: false,
     controller: controller,

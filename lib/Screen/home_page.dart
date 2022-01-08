@@ -1,22 +1,22 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:async';
+import 'dart:ui';
+
+
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:wedevs/Controller/demo_controller.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:wedevs/Controller/home_controller.dart';
 import 'package:wedevs/Dimension/dimension.dart';
-import 'package:wedevs/Model/application_list.dart';
-import 'package:wedevs/Route/route.dart';
+import 'package:wedevs/Language/app_localizations.dart';
+import 'package:wedevs/Packege/Loading_Button/loading_button.dart';
+import 'package:wedevs/Screen/product_page.dart';
 import 'package:wedevs/Theme/themes.dart';
-import 'package:wedevs/URL/url.dart';
-import 'package:wedevs/Widgets/application_skeleton.dart';
-import 'package:wedevs/Widgets/circular_progress.dart';
-import 'package:wedevs/Widgets/default_dialog.dart';
-import 'package:wedevs/Widgets/grid_animation.dart';
-import 'package:wedevs/Widgets/image_placeholder.dart';
-import 'package:wedevs/Widgets/list_animation.dart';
-import 'package:wedevs/Widgets/swipe_refresh.dart';
-
-import '../main.dart';
+import 'package:wedevs/URL/app_constant.dart';
+import 'package:wedevs/Widgets/default_appbar.dart';
+import 'package:wedevs/main.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -39,119 +39,77 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       init: controller,
       builder: (_) {
         return Scaffold(
-          appBar: AppBar(
-            title: Image.asset('assets/logo.png',),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            backgroundColor: Themes.White,
-            actions: [
-              IconButton(
-                onPressed: () =>  logOut(),
-                icon: Icon(Icons.power_settings_new,color: Themes.Primary,)
-              )
-            ],
+          body: SafeArea(child: mainView()),
+          bottomNavigationBar: bottomNavigationBar(),
+          floatingActionButtonLocation: FloatingActionButtonLocation
+              .centerDocked,
+          floatingActionButton: Container(
+            padding: EdgeInsets.all(Dimension.Padding),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: Offset(0, 10),
+                  blurRadius: 6,
+                ),
+              ],
+              gradient: LinearGradient(
+                  colors: [Color(0xFFFF679B), Color(0xFFFF7B51)]),
+            ),
+            child: Icon(Icons.search, color: Themes.White,),
           ),
-          body: SwipeRefresh(
-            controller: controller.refreshController,
-            onRefresh: controller.onRefresh,
-            children: [
-              mainView()
-            ]
-          )
         );
       },
     );
   }
 
   Widget mainView() {
-    return controller.applicationList!=null ? ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: controller.applicationList!.types!.length,
-      itemBuilder: (context,index){
-        return ListAnimation(
-          index: index,
-          child: Card(
-            margin: EdgeInsets.only(top: Dimension.Padding),
-            color: index%2==0 ? Themes.TextFieldBackground : Colors.white,
-            elevation: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: Dimension.Size_10,top: Dimension.Size_5),
-                  child: Text(controller.applicationList!.types![index],style: Get.textTheme.headline1!.copyWith(color: Themes.Primary),),
-                ),
-                Container(
-                  height: 165,
-                  margin: EdgeInsets.only(top: Dimension.Size_10),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: controller.applicationList!.typeWiseData![controller.applicationList!.types![index]]!.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context,position){
-                      return GridAnimation(
-                        column: controller.applicationList!.typeWiseData![controller.applicationList!.types![index]]!.length,
-                        index: position,
-                        child: singleApplication(controller.applicationList!.typeWiseData![controller.applicationList!.types![index]]![position],position)
-                      );
-                    }
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    ) : ApplicationSkeleton();
-  }
-
-  singleApplication(ApplicationData applicationData, int position){
-    return InkWell(
-      onTap: () => controller.goDetails(applicationData),
-      child: Container(
-        margin: EdgeInsets.only(left: Dimension.Size_10),
-        width: Get.width/3,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Card(
-              elevation: 5,
-              child: Padding(
-                padding: EdgeInsets.all(Dimension.Size_10),
-                child: CachedNetworkImage(
-                  imageUrl: '${URL.Main_Url}${applicationData.logoImg}',
-                  height: 90,
-                  width: 90,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => ImagePlaceHolder(height: 90),
-                  errorWidget: (context, url, error) => ImagePlaceHolder(height: 90),
-                ),
-              ),
-            ),
-            Text(applicationData.applicantName!,style: Get.textTheme.bodyText2!.copyWith(color: Themes.Primary),textAlign: TextAlign.center,)
-          ],
-        ),
-      ),
+    return PageView(
+      controller: controller.pageController,
+      children: [
+        ProductPage(),
+        Container(),
+        Container(),
+        Container(),
+        Container(),
+      ],
     );
   }
 
-
-  void logOut(){
-    Get.dialog(
-        DefaultDialog(
-          title: language.LogOut,
-          enableCloseButton: true,
-          child: Text(language.Are_you_sure_you_want_to_logout,style: Theme.of(context).textTheme.bodyText1,),
-          onButtonClick: (state){
-            if(!state) {
-              Get.back();
-            } else{
-              prefs!.clear();
-              Get.offAllNamed(LOGIN);
-            }
-          },
-        )
+  bottomNavigationBar() {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(15),
+        topLeft: Radius.circular(15),
+      ),
+      child: BottomAppBar(
+        child: Container(
+          margin: EdgeInsets.all(Dimension.Padding).copyWith(left: Dimension.Size_30,right: Dimension.Size_30),
+          height: Dimension.Size_30,
+          child: Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: controller.tabs.asMap().map((index, e) =>
+                  MapEntry(
+                      index,
+                      e.isNotEmpty ? GestureDetector(
+                          onTap: () => controller.changePage(index),
+                          child: SvgPicture.asset(e, height: Dimension.Size_24,
+                            width: Dimension.Size_24,
+                            color: controller.currentIndex.value == index
+                                ? Themes.Primary
+                                : Color(0xFF6E7FAA),)
+                      ) : Container()
+                  )).values.toList(),
+            );
+          }),
+        ),
+        shape: CircularNotchedRectangle(),
+        color: Colors.white,
+        elevation: 10,
+      ),
     );
   }
 

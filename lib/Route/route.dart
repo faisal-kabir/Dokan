@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:wedevs/Screen/home_page.dart';
+import 'package:wedevs/Screen/product_page.dart';
 import 'package:wedevs/Screen/login_page.dart';
 import 'package:wedevs/Screen/signup_page.dart';
 import 'package:wedevs/Screen/splash.dart';

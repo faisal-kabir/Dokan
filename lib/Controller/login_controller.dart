@@ -33,7 +33,8 @@ class LoginController extends GetxController{
   }
 
   requestLogin() async {
-    if(!formKey.currentState!.validate()){
+    Get.toNamed(HOME);
+    /*if(!formKey.currentState!.validate()){
       return;
     }
     Loading.value=true;
@@ -56,6 +57,6 @@ class LoginController extends GetxController{
         onError: (data){
         }
     );
-    Loading.value=false;
+    Loading.value=false;*/
   }
 }
