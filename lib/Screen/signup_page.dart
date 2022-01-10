@@ -60,9 +60,23 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                 Text(language.Sign_Up,
                   style: Get.textTheme.headline1!.copyWith(
                       fontSize: Dimension.Size_24),),
-                SizedBox(height: Dimension.Size_40,),
+                SizedBox(height: Dimension.Padding,),
                 DefaultTextField(
                   controller: controller.username,
+                  label: language.Username,
+                  textInputType: TextInputType.emailAddress,
+                  prefixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(width: Dimension.Padding,),
+                      SvgPicture.asset('assets/person.svg',width: Dimension.Size_24,),
+                      SizedBox(width: Dimension.Padding,),
+                    ],
+                  )
+                ),
+                SizedBox(height: Dimension.Padding,),
+                DefaultTextField(
+                  controller: controller.email,
                   label: language.Email,
                   textInputType: TextInputType.emailAddress,
                   prefixIcon: Row(

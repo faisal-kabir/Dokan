@@ -33,8 +33,7 @@ class LoginController extends GetxController{
   }
 
   requestLogin() async {
-    Get.toNamed(HOME);
-    /*if(!formKey.currentState!.validate()){
+    if(!formKey.currentState!.validate()){
       return;
     }
     Loading.value=true;
@@ -46,8 +45,8 @@ class LoginController extends GetxController{
           AppConstant.password: password.text
         },
         onSuccess: (data){
-          if(data.containsKey('non_field_errors')){
-            ErrorMessage(message: data['non_field_errors'][0]);
+          if(data.containsKey('code')){
+            ErrorMessage(message: language.Username_or_password_is_incorrect);
           }else{
             auth=Auth.fromJson(data);
             prefs!.setString(AppConstant.Share_Auth, json.encode(data));
@@ -57,6 +56,6 @@ class LoginController extends GetxController{
         onError: (data){
         }
     );
-    Loading.value=false;*/
+    Loading.value=false;
   }
 }

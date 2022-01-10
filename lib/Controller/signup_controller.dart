@@ -20,6 +20,7 @@ class SignUpController extends GetxController{
   RxBool conObscureText=true.obs;
   GlobalKey<FormState> formKey=GlobalKey();
   TextEditingController username=TextEditingController();
+  TextEditingController email=TextEditingController();
   TextEditingController password=TextEditingController();
   TextEditingController conPassword=TextEditingController();
 
@@ -38,21 +39,27 @@ class SignUpController extends GetxController{
     if(!formKey.currentState!.validate()){
       return;
     }
+    if(password.text!=conPassword.text){
+      ErrorMessage(message: language.Password_and_conPassword_are_not_match);
+      return;
+    }
     Loading.value=true;
     await api_client.SimpleRequest(
-        url: URL.Login,
+        url: URL.Register,
         method: Method.POST,
         body: {
           AppConstant.username: username.text,
+          AppConstant.email: email.text,
           AppConstant.password: password.text
         },
         onSuccess: (data){
-          if(data.containsKey('non_field_errors')){
-            ErrorMessage(message: data['non_field_errors'][0]);
-          }else{
-            auth=Auth.fromJson(data);
-            prefs!.setString(AppConstant.Share_Auth, json.encode(data));
-            Get.offAllNamed(HOME);
+          print(data['code']==400);
+          if(data.containsKey('code') && data['code']==406){
+            ErrorMessage(message: data[AppConstant.message]);
+          } else {
+            SuccessMessage(message: data[AppConstant.message],then: (){
+              //Get.back();
+            });
           }
         },
         onError: (data){

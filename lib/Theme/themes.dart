@@ -8,7 +8,7 @@ class Themes{
   static Color Primary_Lite= const Color(0xFFFFFFFF);
   static Color Primary_Dark=Color(int.parse('#2661FA'.substring(1, 7), radix: 16) + 0xFF000000);
   static Color Primary_Accent=Color(int.parse('#002b83'.substring(1, 7), radix: 16) + 0xFF000000);
-  static Color Background= const Color(0xFFE5E5E5);
+  static Color Background= const Color(0xFFF8F8F8);
 
   static Color Icon_Color=Color(int.parse('#ffffff'.substring(1, 7), radix: 16) + 0xFF000000);
   static Color Highlite_Text_Color=Color(int.parse('#FFFFFF'.substring(1, 7), radix: 16) + 0xFF000000);

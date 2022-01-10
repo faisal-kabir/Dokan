@@ -48,4 +48,15 @@ class Language {
 
   String Product_List='Product List';
 
+  var Username_or_password_is_incorrect='Username or password is incorrect';
+
+  var Filter='Filter';
+
+  String Cancel='Cancel';
+  String Apply='Apply';
+
+  String Sort_by='Short by';
+
+  var No_data_here='No product here';
+
 }

@@ -20,7 +20,8 @@ class Api_Client{
     'Authorization':'${AppConstant.JWT} ${auth!.token}'
   };
   Map<String,String> header1()=>{
-    "Accept": "application/json"
+    "Accept": "application/json",
+    "Content-Type": "application/x-www-form-urlencoded",
   };
 
   void close(){
@@ -76,7 +77,7 @@ class Api_Client{
   }
 
 
-  Future SimpleRequest({required String url,Method method=Method.GET,Map<String , dynamic>? body,required Function onSuccess,required Function onError,bool enableShowError=true,bool isThirdPartyApi=false})async{
+  Future SimpleRequest({required String url,Method method=Method.GET,var body,required Function onSuccess,required Function onError,bool enableShowError=true,bool isThirdPartyApi=false})async{
     http.Response? response;
     try{
       if(method==Method.POST)
@@ -93,7 +94,7 @@ class Api_Client{
         response = await client.get(Uri.parse(url));
       }
       showData(url: url,response: response.body,body: body,method: method, header: header1());
-      if (response.statusCode == 200 || response.statusCode == 401 || response.statusCode == 422 || response.statusCode == 400) {
+      if (response.statusCode == 200 || response.statusCode == 401 || response.statusCode == 422 || response.statusCode == 400 || response.statusCode == 403) {
         var data=json.decode(response.body);
         onSuccess(data);
       } else {

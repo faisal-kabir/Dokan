@@ -91,7 +91,7 @@ class SplashController extends GetxController {
       auth=Auth.fromJson(json.decode(prefs!.getString(AppConstant.Share_Auth)!));
     }
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Themes.Primary,statusBarIconBrightness: Brightness.dark,systemNavigationBarColor: Colors.white,systemNavigationBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Themes.Background,statusBarIconBrightness: Brightness.dark,systemNavigationBarColor: Colors.white,systemNavigationBarIconBrightness: Brightness.dark));
     Timer(const Duration(seconds: 3),(){
       navigationPage();
     });

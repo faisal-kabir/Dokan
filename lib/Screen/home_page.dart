@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:wedevs/Controller/demo_controller.dart';
@@ -40,26 +41,29 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       builder: (_) {
         return Scaffold(
           body: SafeArea(child: mainView()),
-          bottomNavigationBar: bottomNavigationBar(),
-          floatingActionButtonLocation: FloatingActionButtonLocation
-              .centerDocked,
-          floatingActionButton: Container(
-            padding: EdgeInsets.all(Dimension.Padding),
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: Offset(0, 10),
-                  blurRadius: 6,
-                ),
-              ],
-              gradient: LinearGradient(
-                  colors: [Color(0xFFFF679B), Color(0xFFFF7B51)]),
+          floatingActionButton: GestureDetector(
+            onTap: () => controller.filterDialog(),
+            child: Container(
+              padding: EdgeInsets.all(Dimension.Padding),
+              margin: EdgeInsets.all(1),
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 10),
+                    blurRadius: 6,
+                  ),
+                ],
+                gradient: LinearGradient(
+                    colors: [Color(0xFFFF679B), Color(0xFFFF7B51)]),
+              ),
+              child: Icon(Icons.search, color: Themes.White,),
             ),
-            child: Icon(Icons.search, color: Themes.White,),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: bottomNavigationBar(),
         );
       },
     );
@@ -73,13 +77,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         Container(),
         Container(),
         Container(),
-        Container(),
       ],
     );
   }
 
   bottomNavigationBar() {
     return ClipRRect(
+      clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(15),
         topLeft: Radius.circular(15),
@@ -94,14 +98,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: controller.tabs.asMap().map((index, e) =>
                   MapEntry(
                       index,
-                      e.isNotEmpty ? GestureDetector(
+                      GestureDetector(
                           onTap: () => controller.changePage(index),
-                          child: SvgPicture.asset(e, height: Dimension.Size_24,
-                            width: Dimension.Size_24,
-                            color: controller.currentIndex.value == index
-                                ? Themes.Primary
-                                : Color(0xFF6E7FAA),)
-                      ) : Container()
+                          child: Padding(
+                            padding: EdgeInsets.only(right: index==1 ? Dimension.Size_20 : 0, left: index==2 ? Dimension.Size_20 : 0),
+                            child: SvgPicture.asset(e, height: Dimension.Size_24,
+                              width: Dimension.Size_24,
+                              color: controller.currentIndex.value == index
+                                  ? Themes.Primary
+                                  : Color(0xFF6E7FAA),),
+                          )
+                      )
                   )).values.toList(),
             );
           }),

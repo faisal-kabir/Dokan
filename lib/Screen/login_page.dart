@@ -61,8 +61,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 SizedBox(height: Dimension.Size_40,),
                 DefaultTextField(
                   controller: controller.username,
-                  label: language.Email,
-                  textInputType: TextInputType.emailAddress,
+                  label: language.Username,
                   prefixIcon: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
