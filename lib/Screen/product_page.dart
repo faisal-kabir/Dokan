@@ -118,23 +118,31 @@ class _ProductPageState extends State<ProductPage>
   }
 
   Widget mainView() {
-    return controller.products != null ? controller.tempProducts!.isNotEmpty ? StaggeredGridView.countBuilder(
-      primary: false,
+    return ListView(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: controller.tempProducts!.length,
-      padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-      crossAxisCount: 4,
-      mainAxisSpacing: 6.0,
-      crossAxisSpacing: 6.0,
-      itemBuilder: (context, index) {
-        return GridAnimation(
-            index: 2,
-            child: singleApplication(controller.tempProducts![index], index)
-        );
-      },
-      staggeredTileBuilder: (index) => StaggeredTile.fit(2),
-    ) : EmptyView() : CircularProgress();
+      padding: EdgeInsets.zero,
+      children: [
+        controller.products != null ? controller.tempProducts!.isNotEmpty ? StaggeredGridView.countBuilder(
+          primary: false,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: controller.tempProducts!.length,
+          padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+          crossAxisCount: 4,
+          mainAxisSpacing: 6.0,
+          crossAxisSpacing: 6.0,
+          itemBuilder: (context, index) {
+            return GridAnimation(
+                index: 2,
+                child: singleApplication(controller.tempProducts![index], index)
+            );
+          },
+          staggeredTileBuilder: (index) => StaggeredTile.fit(2),
+        ) : EmptyView() : CircularProgress(),
+        SizedBox(height: Get.height*0.3,)
+      ],
+    );
   }
 
   singleApplication(Product productData, int position) {
@@ -208,28 +216,6 @@ class _ProductPageState extends State<ProductPage>
           )
         ],
       ),
-    );
-  }
-
-
-  void logOut() {
-    Get.dialog(
-        DefaultDialog(
-          title: language.LogOut,
-          enableCloseButton: true,
-          child: Text(language.Are_you_sure_you_want_to_logout, style: Theme
-              .of(context)
-              .textTheme
-              .bodyText1,),
-          onButtonClick: (state) {
-            if (!state) {
-              Get.back();
-            } else {
-              prefs!.clear();
-              Get.offAllNamed(LOGIN);
-            }
-          },
-        )
     );
   }
 

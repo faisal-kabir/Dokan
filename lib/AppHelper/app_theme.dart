@@ -15,6 +15,7 @@ AppTheme(){
     primaryColorDark: Themes.Primary,
     primaryColorLight: Themes.Primary_Lite,
     scaffoldBackgroundColor: Themes.Background,
+    dividerColor: Themes.White,
     appBarTheme: AppBarTheme(
       color: Themes.Primary,
       titleTextStyle: TextStyle(color: Themes.White,fontSize: Dimension.Size_18,fontWeight: Dimension.textBold)
@@ -22,8 +23,8 @@ AppTheme(){
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Colors.white,
     ),
-    cardTheme: const CardTheme(
-      shadowColor: Color(0xFFEAEAED)
+    cardTheme: CardTheme(
+      shadowColor: Color(0xFF395AB8).withOpacity(0.1)
     ),
     textTheme: TextTheme(
         headline1: TextStyle(

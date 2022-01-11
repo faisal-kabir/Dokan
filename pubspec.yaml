@@ -28,7 +28,7 @@ dependencies:
   skeletons: ^0.0.3
   flutter_svg: ^1.0.0
   flutter_rating_bar: ^4.0.0
-  animated_bottom_navigation_bar: ^0.3.2
+  dotted_decoration: ^2.0.0
 
 dev_dependencies:
   flutter_test:

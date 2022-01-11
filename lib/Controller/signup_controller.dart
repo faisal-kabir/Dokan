@@ -53,8 +53,7 @@ class SignUpController extends GetxController{
           AppConstant.password: password.text
         },
         onSuccess: (data){
-          print(data['code']==400);
-          if(data.containsKey('code') && data['code']==406){
+          if(data.containsKey('code') && (data['code']==406 || data['code']==400)){
             ErrorMessage(message: data[AppConstant.message]);
           } else {
             SuccessMessage(message: data[AppConstant.message],then: (){

@@ -59,4 +59,21 @@ class Language {
 
   var No_data_here='No product here';
 
+  String My_Account='My Account';
+
+  String Account='Account';
+  String Notification='Notification';
+  String Wishlist='Wishlist';
+
+  String Full_Name='Full Name';
+  String Street_Address='Street Address';
+  String Apt_Suite_Bldg='Apt, Suite, Bldg (optional)';
+  String Zip_Code='Zip Code';
+
+  String Save='Save';
+
+  String Product_Page='Product Page';
+
+  String Cart_Page='Cart Page';
+
 }

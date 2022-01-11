@@ -1,18 +1,15 @@
 import 'dart:async';
-import 'dart:ui';
 
-
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:wedevs/Controller/demo_controller.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wedevs/Controller/home_controller.dart';
 import 'package:wedevs/Dimension/dimension.dart';
 import 'package:wedevs/Language/app_localizations.dart';
 import 'package:wedevs/Packege/Loading_Button/loading_button.dart';
+import 'package:wedevs/Screen/account_page.dart';
 import 'package:wedevs/Screen/product_page.dart';
 import 'package:wedevs/Theme/themes.dart';
 import 'package:wedevs/URL/app_constant.dart';
@@ -40,7 +37,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       init: controller,
       builder: (_) {
         return Scaffold(
-          body: SafeArea(child: mainView()),
+          extendBody: true,
+          body: mainView(),
           floatingActionButton: GestureDetector(
             onTap: () => controller.filterDialog(),
             child: Container(
@@ -74,9 +72,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       controller: controller.pageController,
       children: [
         ProductPage(),
-        Container(),
-        Container(),
-        Container(),
+        Container(
+          alignment: Alignment.center,
+          child: Text(language.Product_Page),
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: Text(language.Cart_Page),
+        ),
+        AccountPage(),
       ],
     );
   }
@@ -89,6 +93,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         topLeft: Radius.circular(15),
       ),
       child: BottomAppBar(
+        clipBehavior: Clip.antiAlias,
+        color: Colors.white,
+        shape: CircularNotchedRectangle(),
+        elevation: 10,
         child: Container(
           margin: EdgeInsets.all(Dimension.Padding).copyWith(left: Dimension.Size_30,right: Dimension.Size_30),
           height: Dimension.Size_30,
@@ -113,9 +121,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             );
           }),
         ),
-        shape: CircularNotchedRectangle(),
-        color: Colors.white,
-        elevation: 10,
       ),
     );
   }
