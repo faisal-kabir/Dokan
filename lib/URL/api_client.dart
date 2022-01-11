@@ -21,7 +21,7 @@ class Api_Client{
   };
   Map<String,String> header1()=>{
     "Accept": "application/json",
-    "Content-Type": "application/x-www-form-urlencoded",
+    "Content-Type": "application/json",
   };
 
   void close(){
