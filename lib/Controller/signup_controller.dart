@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,28 +45,28 @@ class SignUpController extends GetxController{
       return;
     }
     Loading.value=true;
-    await api_client.SimpleRequest(
-        url: URL.Register,
-        method: Method.POST,
-        body: {
-          AppConstant.username: username.text,
-          AppConstant.email: email.text,
-          AppConstant.password: password.text
-        },
-        onSuccess: (data){
-          if(data.containsKey('code')) {
-            if (data['code'] == 406 || data['code'] == 400) {
-              ErrorMessage(message: data[AppConstant.message]);
-            } else if (data['code'] == 200) {
-              SuccessMessage(message: data[AppConstant.message], then: () {
-                Get.back();
-              });
-            }
-          }
-        },
-        onError: (data){
-        }
-    );
+    HttpClient httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse(URL.Register));
+    request.headers.set('content-type', 'application/json');
+    request.add(utf8.encode(json.encode({
+      AppConstant.username: username.text,
+      AppConstant.email: email.text,
+      AppConstant.password: password.text
+    })));
+    HttpClientResponse response = await request.close();
+    // todo - you should check the response.statusCode
+    String reply = await response.transform(utf8.decoder).join();
+    httpClient.close();
+    Map data=json.decode(reply);
+    if(data.containsKey('code')) {
+      if (data['code'] == 406 || data['code'] == 400) {
+        ErrorMessage(message: data[AppConstant.message]);
+      } else if (data['code'] == 200) {
+        SuccessMessage(message: data[AppConstant.message], then: () {
+          Get.back();
+        });
+      }
+    }
     Loading.value=false;
   }
 }
