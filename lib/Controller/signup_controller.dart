@@ -5,11 +5,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:wedevs/Dimension/dimension.dart';
 import 'package:wedevs/Model/auth.dart';
 import 'package:wedevs/Route/route.dart';
+import 'package:wedevs/Theme/themes.dart';
 import 'package:wedevs/URL/api_client.dart';
 import 'package:wedevs/URL/app_constant.dart';
 import 'package:wedevs/URL/url.dart';
+import 'package:wedevs/Widgets/default_dialog.dart';
 import 'package:wedevs/Widgets/show_message.dart';
 import 'package:wedevs/main.dart';
 
@@ -62,9 +65,29 @@ class SignUpController extends GetxController{
       if (data['code'] == 406 || data['code'] == 400) {
         ErrorMessage(message: data[AppConstant.message]);
       } else if (data['code'] == 200) {
-        SuccessMessage(message: data[AppConstant.message], then: () {
-          Get.back();
-        });
+        await Get.dialog(
+          DefaultDialog(
+            child: Column(
+              children: [
+                Text('${data[AppConstant.message]}\n${language.Please_SignIn_your_Account}.',style: Get.textTheme.bodyText1,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      child: Text(language.OK,style: TextStyle(color: Themes.Primary,fontSize: Dimension.Text_Size_Small,fontWeight: Dimension.textBold),),
+                      onPressed: (){
+                        Get.back();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
+            title: language.Success
+          )
+        );
+        Get.back();
       }
     }
     Loading.value=false;

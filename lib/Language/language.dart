@@ -76,4 +76,9 @@ class Language {
 
   String Cart_Page='Cart Page';
 
+  var Success='Success';
+  var OK='OK';
+
+  var Please_SignIn_your_Account='Please Sign In your account';
+
 }
