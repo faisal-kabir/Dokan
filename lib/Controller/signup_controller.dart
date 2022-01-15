@@ -48,47 +48,59 @@ class SignUpController extends GetxController{
       return;
     }
     Loading.value=true;
-    HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse(URL.Register));
-    request.headers.set('content-type', 'application/json');
-    request.add(utf8.encode(json.encode({
-      AppConstant.username: username.text,
-      AppConstant.email: email.text,
-      AppConstant.password: password.text
-    })));
-    HttpClientResponse response = await request.close();
-    // todo - you should check the response.statusCode
-    String reply = await response.transform(utf8.decoder).join();
-    httpClient.close();
-    Map data=json.decode(reply);
-    if(data.containsKey('code')) {
-      if (data['code'] == 406 || data['code'] == 400) {
-        ErrorMessage(message: data[AppConstant.message]);
-      } else if (data['code'] == 200) {
-        await Get.dialog(
-          DefaultDialog(
-            child: Column(
-              children: [
-                Text('${data[AppConstant.message]}\n${language.Please_SignIn_your_Account}.',style: Get.textTheme.bodyText1,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      child: Text(language.OK,style: TextStyle(color: Themes.Primary,fontSize: Dimension.Text_Size_Small,fontWeight: Dimension.textBold),),
-                      onPressed: (){
-                        Get.back();
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-            title: language.Success
-          )
-        );
-        Get.back();
+    try {
+      HttpClient httpClient = new HttpClient();
+      HttpClientRequest request = await httpClient.postUrl(
+          Uri.parse(URL.Register));
+      request.headers.set('content-type', 'application/json');
+      request.add(utf8.encode(json.encode({
+        AppConstant.username: username.text,
+        AppConstant.email: email.text,
+        AppConstant.password: password.text
+      })));
+      HttpClientResponse response = await request.close();
+      // todo - you should check the response.statusCode
+      String reply = await response.transform(utf8.decoder).join();
+      httpClient.close();
+      Map data = json.decode(reply);
+      if (data.containsKey('code')) {
+        if (data['code'] == 406 || data['code'] == 400) {
+          ErrorMessage(message: data[AppConstant.message]);
+        } else if (data['code'] == 200) {
+          await Get.dialog(
+              DefaultDialog(
+                  child: Column(
+                    children: [
+                      Text('${data[AppConstant.message]}\n${language
+                          .Please_SignIn_your_Account}.',
+                        style: Get.textTheme.bodyText1,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            child: Text(language.OK, style: TextStyle(
+                                color: Themes.Primary,
+                                fontSize: Dimension.Text_Size_Small,
+                                fontWeight: Dimension.textBold),),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  title: language.Success
+              )
+          );
+          Get.back();
+        } else {
+          ErrorMessage(message: data['code']);
+        }
       }
+    } catch (e) {
+      ErrorMessage(message: language.Something_went_wrong);
     }
     Loading.value=false;
   }
